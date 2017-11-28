@@ -68,10 +68,31 @@ function removeGamepad(gamepad){
 	delete controllerObjects[gamepad.index];
 }
 
-function moveAnalog(gamepad, index, element, type, axis){
-	if (gamepad.axes[index] != undefined && gamepad[type] != undefined){
-		element.setAttribute(axis, gamepad[type][axis] - -gamepad.axes[index] * gamepad['extend']);
-		document.getElementById(element.id + '-shadow').setAttribute(axis, element.getAttribute(axis));
+function moveAnalog(gamepad, index, element, type, axis, center, source){
+	if (source == 'button'){
+		if (gamepad.buttons[index] != undefined && gamepad[type] != undefined){
+			var value = gamepad.buttons[index];
+			if (typeof(value) == 'object') {
+				value = value.value;
+			}
+			if (center != 0.0){
+				value = (value - center) / center;
+			}
+			element.setAttribute(axis, gamepad[type][axis] - -value * gamepad['extend']);
+			document.getElementById(element.id + '-shadow').setAttribute(axis, element.getAttribute(axis));
+		}
+	} else if (source == 'axis'){
+		if (gamepad.axes[index] != undefined && gamepad[type] != undefined){
+			var value = gamepad.axes[index];
+			if (typeof(value) == 'object') {
+				value = value.value;
+			}
+			if (center != 0.0){
+				value = (value - center) / center;
+			}
+			element.setAttribute(axis, gamepad[type][axis] - -value * gamepad['extend']);
+			document.getElementById(element.id + '-shadow').setAttribute(axis, element.getAttribute(axis));
+		}
 	}
 }
 
@@ -127,37 +148,60 @@ function updateStatus(){
 			var driver = drivers[uOS][uBrowser][controllerObject.driver];
 			for (var i in driver['buttons']){
 				var button = driver['buttons'][i];
-				button = document.getElementById('gamepad-' + controllerObject.index + '-button-' + button);
-				if (button != null){
-					var pressed = controllerObject.buttons[i];
-					if (typeof(pressed) == 'object') {
-						pressed = pressed.pressed;
-					} else {
-						pressed = pressed == 1.0;
+				if (button['type'] == 'button'){
+					var key = document.getElementById('gamepad-' + controllerObject.index + '-button-' + button['key']);
+					if (key != null){
+						var pressed = controllerObject.buttons[i];
+						if (typeof(pressed) == 'object') {
+							pressed = pressed.value;
+						}
+						pressed = pressed > button['min'];
+						if (key.className.baseVal == 'anti'){
+							key.setAttribute('fill-opacity', pressed ? 0 : 0.6);
+						} else {
+							key.setAttribute('fill-opacity', pressed ? 1 : 0);
+						}
 					}
-					if (button.className.baseVal == 'anti'){
-						button.setAttribute('fill-opacity', pressed ? 0 : 0.6);
+				} else if (button['type'] == 'axis'){
+					var id = 'gamepad-' + controllerObject.index + '-button-' + button['key'];
+					var key = document.getElementById(id);
+					if (key == null){
+						pressAnalog(controllerObject, i, id, button['axis']);
 					} else {
-						button.setAttribute('fill-opacity', pressed ? 1 : 0);
+						moveAnalog(controllerObject, i, key, button['key'], 'c' + button['axis'], button['center'], 'button');
 					}
 				}
 			}
 			for (var i in driver['axes']){
 				var axis = driver['axes'][i];
-				if (axis['type'] == 'analog'){
-					var id = 'gamepad-' + controllerObject.index + '-button-' + axis['button'];
-					var button = document.getElementById(id);
-					if (button == null){
+				if (axis['type'] == 'axis'){
+					var id = 'gamepad-' + controllerObject.index + '-button-' + axis['key'];
+					var key = document.getElementById(id);
+					if (key == null){
 						pressAnalog(controllerObject, i, id, axis['axis']);
 					} else {
-						moveAnalog(controllerObject, i, button, axis['button'], 'c' + axis['axis']);
+						moveAnalog(controllerObject, i, key, axis['key'], 'c' + axis['axis'], axis['center'], 'axis');
 					}
 				} else if (axis['type'] == 'dpad'){
-					var buttonNegative = document.getElementById('gamepad-' + controllerObject.index + '-button-' + axis['buttons']['-']);
-					var buttonPositive = document.getElementById('gamepad-' + controllerObject.index + '-button-' + axis['buttons']['+']);
+					var buttonNegative = document.getElementById('gamepad-' + controllerObject.index + '-button-' + axis['keys']['-']);
+					var buttonPositive = document.getElementById('gamepad-' + controllerObject.index + '-button-' + axis['keys']['+']);
 					pressDpad(controllerObject, i, buttonNegative, buttonPositive);
 				} else if (axis['type'] == 'value'){
 					pressByValue(controllerObject, i, axis['buttons']);
+				} else if (axis['type'] == 'button'){
+					var key = document.getElementById('gamepad-' + controllerObject.index + '-button-' + axis['key']);
+					if (key != null){
+						var pressed = controllerObject.axes[i];
+						if (typeof(pressed) == 'object') {
+							pressed = pressed.pressed;
+						}
+						pressed = pressed > axis['min'];
+						if (key.className.baseVal == 'anti'){
+							key.setAttribute('fill-opacity', pressed ? 0 : 0.6);
+						} else {
+							key.setAttribute('fill-opacity', pressed ? 1 : 0);
+						}
+					}
 				}
 			}
 		}

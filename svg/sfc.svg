@@ -16,13 +16,13 @@
 	</g>
 	<g style="stroke:#1a1c1b;stroke-width:1">
 		<circle style="fill:#014da3" cx="246.5045" cy="56.585583" r="11.638"/>
-		<circle class="anti" id="button-tr" fill-opacity="0" style="fill:#000000" cx="246.5045" cy="56.585583" r="11.638"/>
+		<circle class="anti" id="button-tr" fill-opacity="0" style="fill:#010101" cx="246.5045" cy="56.585583" r="11.638"/>
 		<circle style="fill:#00926d" cx="217.89549" cy="78.83046" r="11.638"/>
-		<circle class="anti" id="button-sq" fill-opacity="0" style="fill:#000000" cx="217.89549" cy="78.83046" r="11.638"/>
+		<circle class="anti" id="button-sq" fill-opacity="0" style="fill:#010101" cx="217.89549" cy="78.83046" r="11.638"/>
 		<circle style="fill:#e03c4b" cx="274.95248" cy="78.521622" r="11.638"/>
-		<circle class="anti" id="button-ci" fill-opacity="0" style="fill:#000000" cx="274.95248" cy="78.521622" r="11.638"/>
+		<circle class="anti" id="button-ci" fill-opacity="0" style="fill:#010101" cx="274.95248" cy="78.521622" r="11.638"/>
 		<circle style="fill:#ffbc54" cx="246.34349" cy="100.76845" r="11.638"/>
-		<circle class="anti" id="button-cr" fill-opacity="0" style="fill:#000000" cx="246.34349" cy="100.76845" r="11.638"/>
+		<circle class="anti" id="button-cr" fill-opacity="0" style="fill:#010101" cx="246.34349" cy="100.76845" r="11.638"/>
 	</g>
 	<g style="fill:#485053;stroke-width:0">
 		<rect x="39.592281" y="145.31157" width="25.276676" height="9.4951239" ry="4.7475619" transform="matrix(0.79913738,-0.60114844,0.60114884,0.79913708,0,0)"/>
