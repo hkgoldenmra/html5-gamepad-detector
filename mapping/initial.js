@@ -8,6 +8,7 @@ MokUncle
 joseph6lc
 Sundayla123
 godseatoutflow
+oragejan
 
 Thank you for the above
 */
@@ -18,6 +19,12 @@ var drivers = {
 	},
 	"Windows": {
 		"Firefox": {},
-		"Chrome": {}
+		"Chrome": {},
+		"Opera": {}
+	},
+	"Mac": {
+		"Firefox": {},
+		"Chrome": {},
+		"Opera": {}
 	}
 };

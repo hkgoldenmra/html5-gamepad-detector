@@ -9,6 +9,8 @@
 		<script type="text/javascript" src="mapping/linux/firefox/ps4.js"></script>
 		<script type="text/javascript" src="mapping/linux/chrome/twin-usb-joystick.js"></script>
 		<script type="text/javascript" src="mapping/linux/chrome/ps4.js"></script>
+		<script type="text/javascript" src="mapping/linux/opera/twin-usb-joystick.js"></script>
+		<script type="text/javascript" src="mapping/linux/opera/ps4.js"></script>
 		<script type="text/javascript" src="mapping/windows/firefox/twin-usb-joystick.js"></script>
 		<script type="text/javascript" src="mapping/windows/firefox/xbox360.js"></script>
 		<script type="text/javascript" src="mapping/windows/firefox/ps4.js"></script>
@@ -17,6 +19,10 @@
 		<script type="text/javascript" src="mapping/windows/chrome/xbox360.js"></script>
 		<script type="text/javascript" src="mapping/windows/chrome/ps4.js"></script>
 		<script type="text/javascript" src="mapping/windows/chrome/xiao-mi.js"></script>
+		<script type="text/javascript" src="mapping/mac/firefox/twin-usb-joystick.js"></script>
+		<script type="text/javascript" src="mapping/mac/firefox/ps4.js"></script>
+		<script type="text/javascript" src="mapping/mac/chrome/ps4.js"></script>
+		<script type="text/javascript" src="mapping/mac/opera/ps4.js"></script>
 		<script type="text/javascript">
 //<!--
 var offset = 0.1;
@@ -47,7 +53,7 @@ window.addEventListener("gamepaddisconnected", disconnectHandler);
 		</script>
 	</head>
 	<body style="background-color: #000000;">
-<h1 id="warning" style="color: #ffffff;">This page requires Linux or Windows and Firefox or Chrome to capture your Gamepad.</h1>
+<h1 id="warning" style="color: #ffffff;">Firefox is the most suitable browser on Linux, Windows or Mac for this page.</h1>
 <label style="color: #ffffff;">Gamepad Display Style: </label><select id="gamepad-style" onchange="window.location.href = '?type=' + this.value;">
 	<optgroup label="Sony">
 		<option value="ps">Sony PlayStation</option>
@@ -1327,9 +1333,23 @@ if (index > -1){
 		}
 	}
 }
+var warning = document.getElementById('warning');
 if (uOS == null || uBrowser == null){
+	var rOSs = [];
+	var rBrowsers = [];
+	for (var i in drivers){
+		if (!rOSs.includes(i)){
+			rOSs.push(i);
+		}
+		for (var j in drivers[i]){
+			if (!rBrowsers.includes(j)){
+				rBrowsers.push(j);
+			}
+		}
+	}
+	warning.innerHTML = 'This page requires ' + rOSs.toString().replace(/,/g , ', ') + ' and ' + rBrowsers.toString().replace(/,/g , ', ') + ' to capture your Gamepad.';
 } else {
-	document.getElementById('warning').innerHTML = 'Press any key on your gamepad';
+	warning.innerHTML = 'Press any key on your gamepad';
 }
 if (!haveEvents){
 	window.setInterval(scanGamepads, 1000);

@@ -76,7 +76,7 @@ function moveAnalog(gamepad, index, element, type, axis, center, source){
 				value = value.value;
 			}
 			if (center != 0.0){
-				value = (value - center) / center;
+				value = (value - center) * (1 / center);
 			}
 			element.setAttribute(axis, gamepad[type][axis] - -value * gamepad['extend']);
 			document.getElementById(element.id + '-shadow').setAttribute(axis, element.getAttribute(axis));
@@ -88,7 +88,7 @@ function moveAnalog(gamepad, index, element, type, axis, center, source){
 				value = value.value;
 			}
 			if (center != 0.0){
-				value = (value - center) / center;
+				value = (value - center) * (1 / center);
 			}
 			element.setAttribute(axis, gamepad[type][axis] - -value * gamepad['extend']);
 			document.getElementById(element.id + '-shadow').setAttribute(axis, element.getAttribute(axis));
