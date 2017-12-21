@@ -43,9 +43,6 @@ for (var i in drivers[uOS]){
 		break;
 	}
 }
-
-window.addEventListener("gamepadconnected", connectHandler);
-window.addEventListener("gamepaddisconnected", disconnectHandler);
 //-->
 		</script>
 	</head>
@@ -1348,7 +1345,10 @@ if (uOS == null || uBrowser == null){
 } else {
 	warning.innerHTML = 'Press any key on your gamepad';
 }
-if (!haveEvents){
+if (haveEvents){
+	window.addEventListener("gamepadconnected", connectHandler);
+	window.addEventListener("gamepaddisconnected", disconnectHandler);
+} else {
 	window.setInterval(scanGamepads, 1000);
 }
 //-->
