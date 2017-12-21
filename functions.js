@@ -1,3 +1,6 @@
+var controllerObjects = {};
+var haveEvents = ('ongamepadconnected' in window);
+
 function templateReId(gamepad, elements){
 	for (var i = 0; i < elements.length; i++){
 		if (elements[i].id != ''){
@@ -8,6 +11,38 @@ function templateReId(gamepad, elements){
 
 function connectHandler(event){
 	addGamepad(event.gamepad);
+}
+
+function shortDriverName(driver){
+	var index = 0;
+	if ((index = driver.lastIndexOf(' (')) >= 0){
+		driver = driver.substring(0, index);
+	}
+	if ((index = driver.lastIndexOf(') ')) >= 0){
+		driver = driver.substring(index + 2);
+	}
+	if ((index = driver.lastIndexOf('-')) >= 0){
+		driver = driver.substring(index + 1);
+	}
+	return driver;
+}
+
+function initialGamepad(div, gamepad){
+	gamepad.driver = shortDriverName(gamepad.id);
+	gamepad.extend = 10;
+	var l3 = document.getElementById(div.id + '-button-l3');
+	if (l3 != null){
+		gamepad.l3 = {};
+		gamepad.l3.cx = l3.getAttribute('cx');
+		gamepad.l3.cy = l3.getAttribute('cy');
+	}
+	var r3 = document.getElementById(div.id + '-button-r3');
+	if (r3 != null){
+		gamepad.r3 = {};
+		gamepad.r3.cx = r3.getAttribute('cx');
+		gamepad.r3.cy = r3.getAttribute('cy');
+	}
+	controllerObjects[gamepad.index] = gamepad;
 }
 
 function addGamepad(gamepad){
@@ -22,39 +57,14 @@ function addGamepad(gamepad){
 	templateReId(gamepad, div.getElementsByTagName('polygon'));
 	templateReId(gamepad, div.getElementsByTagName('textarea'));
 	document.body.appendChild(div);
-	var driver = gamepad.id;
-	var index = 0;
-	if ((index = driver.lastIndexOf(' (')) >= 0){
-		driver = driver.substring(0, index);
-	}
-	if ((index = driver.lastIndexOf(') ')) >= 0){
-		driver = driver.substring(index + 2);
-	}
-	if ((index = driver.lastIndexOf('-')) >= 0){
-		driver = driver.substring(index + 1);
-	}
 	var textarea = document.getElementById(div.id + '-info');
 	textarea.value = '';
 	textarea.value += "index = " + gamepad.index;
 	textarea.value += "\ndriver (long) = " + gamepad.id;
-	textarea.value += "\ndriver (short) = " + driver;
+	textarea.value += "\ndriver (short) = " + shortDriverName(gamepad.id);
 	textarea.value += "\nbuttons = " + gamepad.buttons.length;
 	textarea.value += "\naxes = " + gamepad.axes.length;
-	gamepad['driver'] = driver;
-	gamepad['extend'] = 10;
-	var l3 = document.getElementById(div.id + '-button-l3');
-	if (l3 != null){
-		gamepad['l3'] = {};
-		gamepad['l3']['cx'] = l3.getAttribute('cx');
-		gamepad['l3']['cy'] = l3.getAttribute('cy');
-	}
-	var r3 = document.getElementById(div.id + '-button-r3');
-	if (r3 != null){
-		gamepad['r3'] = {};
-		gamepad['r3']['cx'] = r3.getAttribute('cx');
-		gamepad['r3']['cy'] = r3.getAttribute('cy');
-	}
-	controllerObjects[gamepad.index] = gamepad;
+	initialGamepad(div, gamepad);
 	window.requestAnimationFrame(updateStatus);
 }
 
@@ -214,11 +224,14 @@ function updateStatus(){
 function scanGamepads(){
 	var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
 	for (var i = 0; i < gamepads.length; i++){
-		if (gamepads[i]){
-			if (gamepads[i].index in controllerObjects){
-				controllerObjects[gamepads[i].index] = gamepads[i];
+		var gamepad = gamepads[i];
+		if (gamepad){
+			if (gamepad.index in controllerObjects){
+				var style = document.getElementById('gamepad-style').value;
+				var div = document.getElementById(style + '-gamepad-template').cloneNode(true);
+				initialGamepad(div, gamepad);
 			} else {
-				addGamepad(gamepads[i]);
+				addGamepad(gamepad);
 			}
 		}
 	}

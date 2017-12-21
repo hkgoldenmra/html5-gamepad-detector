@@ -44,9 +44,6 @@ for (var i in drivers[uOS]){
 	}
 }
 
-var haveEvents = ('ongamepadconnected' in window);
-var controllerObjects = {};
-
 window.addEventListener("gamepadconnected", connectHandler);
 window.addEventListener("gamepaddisconnected", disconnectHandler);
 //-->
