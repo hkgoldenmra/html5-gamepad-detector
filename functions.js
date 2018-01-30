@@ -112,19 +112,23 @@ function pressAnalog(gamepad, index, prefix, axis){
 			var buttonU = document.getElementById(prefix + 'u');
 			if (buttonU != null){
 				buttonU.setAttribute('fill-opacity', ((gamepad.axes[index] < -offset) ? 1 : 0));
+				buttonU.style.fillOpacity = ((gamepad.axes[index] < -offset) ? 1 : 0);
 			}
 			var buttonD = document.getElementById(prefix + 'd');
 			if (buttonD != null){
 				buttonD.setAttribute('fill-opacity', ((gamepad.axes[index] > offset) ? 1 : 0));
+				buttonD.style.fillOpacity = ((gamepad.axes[index] < -offset) ? 1 : 0);
 			}
 		} else if (axis == 'x'){
 			var buttonL = document.getElementById(prefix + 'l');
 			if (buttonL != null){
 				buttonL.setAttribute('fill-opacity', ((gamepad.axes[index] < -offset) ? 1 : 0));
+				buttonL.style.fillOpacity = ((gamepad.axes[index] < -offset) ? 1 : 0);
 			}
 			var buttonR = document.getElementById(prefix + 'r');
 			if (buttonR != null){
 				buttonR.setAttribute('fill-opacity', ((gamepad.axes[index] > offset) ? 1 : 0));
+				buttonR.style.fillOpacity = ((gamepad.axes[index] < -offset) ? 1 : 0);
 			}
 		}
 	}
@@ -133,7 +137,9 @@ function pressAnalog(gamepad, index, prefix, axis){
 function pressDpad(gamepad, index, elementNegative, elementPositive){
 	if (gamepad.axes[index] != undefined){
 		elementNegative.setAttribute('fill-opacity', ((gamepad.axes[index] < -offset) ? 1 : 0));
+		elementNegative.style.fillOpacity = ((gamepad.axes[index] < -offset) ? 1 : 0);
 		elementPositive.setAttribute('fill-opacity', ((gamepad.axes[index] > offset) ? 1 : 0));
+		elementPositive.style.fillOpacity = ((gamepad.axes[index] > offset) ? 1 : 0);
 	}
 }
 
@@ -142,7 +148,9 @@ function pressByValue(gamepad, index, values){
 		var input = gamepad.axes[index].toFixed(6);
 		for (var pressed in values[input]){
 			for (var i in values[input][pressed]){
-				document.getElementById('gamepad-' + gamepad.index + '-button-' + values[input][pressed][i]).setAttribute('fill-opacity', pressed);
+				var element = document.getElementById('gamepad-' + gamepad.index + '-button-' + values[input][pressed][i]);
+				element.setAttribute('fill-opacity', pressed);
+				element.style.fillOpacity = pressed;
 			}
 		}
 	}
@@ -166,10 +174,12 @@ function updateStatus(){
 							pressed = pressed.value;
 						}
 						pressed = pressed > button['min'];
-						if (key.className.baseVal == 'anti'){
+						if (key.className.baseVal == 'reverse-button'){
 							key.setAttribute('fill-opacity', pressed ? 0 : 0.6);
+							key.style.fillOpacity = pressed ? 0 : 0.6;
 						} else {
 							key.setAttribute('fill-opacity', pressed ? 1 : 0);
+							key.style.fillOpacity = pressed ? 1 : 0;
 						}
 					}
 				} else if (button['type'] == 'axis'){
@@ -206,10 +216,12 @@ function updateStatus(){
 							pressed = pressed.pressed;
 						}
 						pressed = pressed > axis['min'];
-						if (key.className.baseVal == 'anti'){
+						if (key.className.baseVal == 'reverse-button'){
 							key.setAttribute('fill-opacity', pressed ? 0 : 0.6);
+							key.style.fillOpacity = pressed ? 0 : 0.6;
 						} else {
 							key.setAttribute('fill-opacity', pressed ? 1 : 0);
+							key.style.fillOpacity = pressed ? 1 : 0;
 						}
 					}
 				}
