@@ -117,7 +117,7 @@ function pressAnalog(gamepad, index, prefix, axis){
 			var buttonD = document.getElementById(prefix + 'd');
 			if (buttonD != null){
 				buttonD.setAttribute('fill-opacity', ((gamepad.axes[index] > offset) ? 1 : 0));
-				buttonD.style.fillOpacity = ((gamepad.axes[index] < -offset) ? 1 : 0);
+				buttonD.style.fillOpacity = ((gamepad.axes[index] > offset) ? 1 : 0);
 			}
 		} else if (axis == 'x'){
 			var buttonL = document.getElementById(prefix + 'l');
@@ -128,7 +128,7 @@ function pressAnalog(gamepad, index, prefix, axis){
 			var buttonR = document.getElementById(prefix + 'r');
 			if (buttonR != null){
 				buttonR.setAttribute('fill-opacity', ((gamepad.axes[index] > offset) ? 1 : 0));
-				buttonR.style.fillOpacity = ((gamepad.axes[index] < -offset) ? 1 : 0);
+				buttonR.style.fillOpacity = ((gamepad.axes[index] > offset) ? 1 : 0);
 			}
 		}
 	}
@@ -229,7 +229,8 @@ function updateStatus(){
 		}
 		window.requestAnimationFrame(updateStatus);
 	} catch (ex){
-		document.getElementById('warning').innerHTML = ex.lineNumber + ': ' + ex.toString();
+		var errorString = ex.lineNumber + ': ' + ex.toString();
+		document.getElementById('warning').innerHTML = errorString;
 	}
 }
 

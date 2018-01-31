@@ -15,7 +15,8 @@ Thank you for the above
 var drivers = {
 	"Linux": {
 		"Firefox": {},
-		"Chrome": {}
+		"Chrome": {},
+		"Opera": {}
 	},
 	"Windows": {
 		"Firefox": {},
