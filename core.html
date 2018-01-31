@@ -1443,7 +1443,11 @@ if (index > -1){
 					break loop;
 				}
 			}
-		} else if (fields[0] == 'debug' && fields[1] == '0'){
+		}
+	}
+	for (var i in index){
+		var fields = index[i].split('=');
+		if (fields[0] == 'debug' && fields[1] == '0'){
 			document.getElementById('debug').style.display = 'none';
 			document.getElementById('info').style.display = 'none';
 		}
