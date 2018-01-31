@@ -57,7 +57,7 @@ function addGamepad(gamepad){
 	templateReId(gamepad, div.getElementsByTagName('polygon'));
 	templateReId(gamepad, div.getElementsByTagName('textarea'));
 	document.body.appendChild(div);
-	var textarea = document.getElementById(div.id + '-info');
+	var textarea = document.getElementById('info');
 	textarea.value = '';
 	textarea.value += "index = " + gamepad.index;
 	textarea.value += "\ndriver (long) = " + gamepad.id;
